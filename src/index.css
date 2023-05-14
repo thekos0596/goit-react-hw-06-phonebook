@@ -1,51 +1,41 @@
 @import-normalize; /* bring in normalize.css styles */
 
-:root {
-  --accent: #6a9bd8;
-  --primary: #282828;
-  --secondary: #858585;
-  --bcg: #ebf5fc;
-  --red: rgba(191, 42, 26, 0.7);
-  --main-shadow: -2px -2px 5px #ffffff, 3px 3px 5px rgba(0, 0, 0, 0.1);
-}
-
 body {
   margin: 0;
-  line-height: 1.5;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #ebf5fc;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+p,
 h1,
 h2,
-h3,
-h4,
-h5,
-h6,
-p {
-  margin: 0;
-}
-
-ul,
-ol {
+ul {
   margin: 0;
   padding: 0;
-}
-
-li {
-  list-style-type: none;
+  list-style: none;
 }
 
 img {
   display: block;
   max-width: 100%;
   height: auto;
+}
+
+:root {
+  --accent: #6a9bd8;
+  --primary: #282828;
+  --secondary: #858585;
+  --bg: #ebf5fc;
+  --main-shadow: -2px -2px 5px #ffffff, 3px 3px 5px rgba(0, 0, 0, 0.1);
+  --inset-shadow: inset -2px -2px 5px #ffffff, inset 3px 3px 5px rgba(0, 0, 0, 0.1);
+  --good: rgba(96, 205, 74, 0.7);
+  --neutral: rgba(205, 185, 74, 0.7);
+  --bad: rgba(205, 87, 74, 0.7);
 }

@@ -1,63 +1,66 @@
-import PropTypes from 'prop-types';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getContacts } from 'redux/selectors';
+import { addContact } from 'redux/contactsSlice';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+import * as Yup from 'yup';
 import { Formik } from 'formik';
-import { validationSchema } from './validationShema';
-import {
-  FormContainer,
-  FormEl,
-  FormLabel,
-  FormInput,
-  ErrorMessageForUser,
-  FormButton,
-} from './ContactForm.styled';
+import { customAlphabet } from 'nanoid';
+import { Container, Input, Label, Wrapper, ErrorMsg, Btn } from './ContactForm.styled';
+
+const nanoid = customAlphabet('1234567890', 3);
+
+const schema = Yup.object().shape({
+  name: Yup.string().min(2).max(70).required(),
+  number: Yup.number().min(4).required(),
+});
 
 const initialValues = {
+  id: '',
   name: '',
   number: '',
 };
 
-export const ContactForm = ({ onSubmit }) => {
+export const ContactForm = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
+
   const handleSubmit = (values, { resetForm }) => {
-    onSubmit({ ...values });
+    const newContact = {
+      id: 'id-' + nanoid(),
+      name: values.name,
+      number: values.number,
+    };
+
+    if (contacts.find(contact => contact.name === newContact.name)) {
+      return toast.error(`${newContact.name} is already in contacts`);
+    }
+
+    dispatch(addContact(newContact));
     resetForm();
   };
 
   return (
-    <FormContainer>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ isSubmitting }) => (
-          <FormEl>
-            <FormLabel htmlFor="name">
-              Name
-              <FormInput
-                type="text"
-                name="name"
-                placeholder="Please enter name..."
-              />
-              <ErrorMessageForUser name="name" component="div" />
-            </FormLabel>
-            <FormLabel htmlFor="number">
-              Number
-              <FormInput
-                type="tel"
-                name="number"
-                placeholder="Please enter a phone number..."
-              />
-              <ErrorMessageForUser name="number" component="div" />
-            </FormLabel>
-            <FormButton type="submit" disabled={isSubmitting}>
-              Add contact
-            </FormButton>
-          </FormEl>
-        )}
-      </Formik>
-    </FormContainer>
-  );
-};
+    <>
+      <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={schema}>
+        <Container>
+          <Wrapper>
+            <Label htmlFor="name">Name:</Label>
+            <Input name="name" type="text" id="name" />
+            <ErrorMsg name="name" component="div" />
+          </Wrapper>
 
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+          <Wrapper>
+            <Label htmlFor="number">Number:</Label>
+            <Input name="number" type="tel" id="number" />
+            <ErrorMsg name="number" component="div" />
+          </Wrapper>
+
+          <Btn type="submit">Add contact</Btn>
+        </Container>
+      </Formik>
+      <ToastContainer />
+    </>
+  );
 };
